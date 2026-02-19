@@ -1,0 +1,16 @@
+<!--pages/carve/carve.wxml-->
+<view class="container">
+  <canvas 
+    type="2d" 
+    id="carveCanvas" 
+    class="paint-canvas"
+    bindtouchstart="handleTouchStart"
+    bindtouchmove="handleTouchMove"
+    bindtouchend="handleTouchEnd"
+  ></canvas>
+
+  <view class="footer-bar">
+    <button class="btn reset-btn" bindtap="clearCanvas">清空</button>
+    <view class="tips">在上方区域尝试滑动绘图</view>
+  </view>
+</view> 

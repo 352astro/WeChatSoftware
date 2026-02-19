@@ -1,0 +1,17 @@
+<!--pages/home/home.wxml-->
+<view class="container">
+  <view class="main-content">
+    <view class="welcome-section">
+      <text class="title">首页</text>
+      <text class="subtitle">欢迎回来，Carved Preserves 管理系统</text>
+    </view>
+    
+    <button class="card-btn" bindtap="startCarve" hover-class="btn-hover">
+      <text class="card-text">雕刻</text>
+    </button>
+  </view>
+
+  <view class="footer">
+    <text>Version 1.0.0</text>
+  </view>
+</view>

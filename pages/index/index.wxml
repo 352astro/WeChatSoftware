@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="logo-box">
+    <text class="app-name">Carved Preserves</text>
+  </view>
+  
+  <view class="footer">
+    <text>© 2026 Lucky Project</text>
+  </view>
+</view>
