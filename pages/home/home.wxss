@@ -82,3 +82,14 @@
   font-size: 32rpx;
   font-weight: 500;
 }
+
+/* 给模型容器设置一些边距和圆角 */
+.model-container {
+  width: 90%;
+  height: 300px;
+  margin: 20rpx auto;
+  border-radius: 20rpx;
+  overflow: hidden; /* 防止模型溢出边界 */
+  background-color: #f0f0f0; /* 模型加载前的占位背景 */
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}

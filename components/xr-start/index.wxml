@@ -1,0 +1,26 @@
+<!--components/xr-start/index.wxml-->
+<xr-scene env-data="sky-env">
+  <xr-assets>
+    <xr-asset-load type="gltf" asset-id="myModel" src="../../assets/model.glb" />
+    
+    <xr-asset-load type="env-data" asset-id="sky-env" src="https://mmbizwxaminiprogram-1258344707.cos.ap-guangzhou.myqcloud.com/xr-frame/demo/env-test.bin" />
+  </xr-assets>
+
+  <xr-light type="ambient" color="1 1 1" intensity="1.2" />
+  <xr-light type="directional" rotation="40 70 0" color="1 1 1" intensity="2" />
+
+  <xr-gltf 
+    model="myModel" 
+    position="0 0 0" 
+    scale="1 1 1" 
+    anim-autoplay
+  />
+
+  <xr-camera
+    id="camera"
+    position="0 1 4"
+    target="0 0 0"
+    background="sky"
+    camera-orbit-control
+  />
+</xr-scene>
