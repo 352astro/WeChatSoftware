@@ -1,24 +1,20 @@
-// components/xr-start/index.js
 Component({
-
-  /**
-   * 组件的属性列表
-   */
-  properties: {
-
-  },
-
-  /**
-   * 组件的初始数据
-   */
+  behaviors: [require('../common/share-behavior').default],
   data: {
-
+    loaded: false
   },
-
-  /**
-   * 组件的方法列表
-   */
+  lifetimes: {},
   methods: {
-
+    handleReady({detail}) {
+      const xrScene = this.scene = detail.value;
+      console.log('xr-scene', xrScene);
+    },
+    handleAssetsProgress: function({detail}) {
+      console.log('assets progress', detail.value);
+    },
+    handleAssetsLoaded: function({detail}) {
+      console.log('assets loaded', detail.value);
+      this.setData({loaded: true});
+    }
   }
 })
