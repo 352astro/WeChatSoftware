@@ -1,35 +1,124 @@
 /* pages/carve/carve.wxss */
-.container {
+.page {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f0f0f0;
+  background: #142e27;
+  color: #e4fff6;
+}
+
+.top-bar {
+  background: #1b3830;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.top-row {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28rpx;
+}
+
+.top-btn {
+  width: 130rpx;
+  font-size: 28rpx;
+  color: #c8f7e8;
+}
+
+.top-placeholder {
+  width: 130rpx;
+}
+
+.save-btn {
+  position: absolute;
+  right: 24rpx;
+  padding: 14rpx 32rpx;
+  border-radius: 30rpx;
+  background: #2d9d78;
+  color: #ffffff;
+  font-size: 28rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.top-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #eafff8;
+}
+
+.canvas-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 24rpx;
+  box-sizing: border-box;
 }
 
 .paint-canvas {
-  width: 100%;
-  flex: 1;
-  background-color: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.2);
 }
 
-.footer-bar {
-  height: 150rpx;
+.bottom-bar {
+  background: #1b3830;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20rpx 24rpx 18rpx;
+  flex-shrink: 0;
+}
+
+.size-row {
   display: flex;
   align-items: center;
-  padding: 0 30rpx;
-  background-color: #fff;
-  border-top: 1rpx solid #eee;
 }
 
-.btn {
-  font-size: 28rpx;
-  background-color: #ff4d4f;
-  color: white;
-  margin-right: 20rpx;
+.size-label {
+  font-size: 26rpx;
+  color: #c8f7e8;
 }
 
-.tips {
-  font-size: 24rpx;
-  color: #999;
+.size-slider {
+  flex: 1;
+  margin: 0 20rpx;
+}
+
+.size-value {
+  width: 56rpx;
+  text-align: right;
+  font-size: 26rpx;
+  color: #ffffff;
+}
+
+.tool-row {
+  display: flex;
+  margin-top: 18rpx;
+  gap: 14rpx;
+}
+
+.tool-btn {
+  flex: 1;
+  height: 68rpx;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #d6fced;
+  background: #26483d;
+  border: 1px solid transparent;
+}
+
+.tool-btn-active {
+  border-color: #5ae0ad;
+  background: #2d9d78;
+  color: #ffffff;
+}
+
+.tool-btn-danger {
+  background: #7a3a3a;
+  color: #ffecec;
 }

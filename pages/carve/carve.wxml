@@ -1,1 +1,54 @@
-<!--pages/carve/carve.wxml-->
+<!-- pages/carve/carve.wxml -->
+<view class="page">
+  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-row">
+      <view class="top-btn" bindtap="goBack">← 返回</view>
+      <view class="top-title">蜜饯新雕</view>
+      <view class="top-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- 独立保存按钮，位于顶部栏右下方 -->
+  <view class="save-btn" style="top: {{statusBarHeight + 54}}px;" bindtap="saveArtwork">保存</view>
+
+  <view class="canvas-wrap">
+    <canvas
+      id="carveCanvas"
+      canvas-id="carveCanvas"
+      type="2d"
+      class="paint-canvas"
+      style="width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+      disable-scroll="true"
+      bindtouchstart="onTouchStart"
+      bindtouchmove="onTouchMove"
+      bindtouchend="onTouchEnd"
+      bindtouchcancel="onTouchEnd"
+    />
+  </view>
+
+  <view class="bottom-bar" style="padding-bottom: {{safeBottom}}px;">
+    <view class="size-row">
+      <text class="size-label">画笔大小</text>
+      <slider
+        class="size-slider"
+        min="2"
+        max="30"
+        step="1"
+        value="{{lineWidth}}"
+        activeColor="#2d9d78"
+        backgroundColor="#33584e"
+        block-size="18"
+        bindchange="onSizeChange"
+        bindchanging="onSizeChanging"
+      />
+      <text class="size-value">{{lineWidth}}</text>
+    </view>
+
+    <view class="tool-row">
+      <view class="tool-btn {{activeTool === 'carve' ? 'tool-btn-active' : ''}}" data-tool="carve" bindtap="switchTool">雕刻</view>
+      <view class="tool-btn {{activeTool === 'hollow' ? 'tool-btn-active' : ''}}" data-tool="hollow" bindtap="switchTool">镂空</view>
+      <view class="tool-btn {{activeTool === 'eraser' ? 'tool-btn-active' : ''}}" data-tool="eraser" bindtap="switchTool">橡皮擦</view>
+      <view class="tool-btn tool-btn-danger" bindtap="clearCanvas">清空</view>
+    </view>
+  </view>
+</view>
