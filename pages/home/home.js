@@ -46,6 +46,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 0
+      });
+    }
 
   },
 
@@ -82,5 +87,24 @@ Page({
    */
   onShareAppMessage() {
 
+  }
+
+  // --- 核心路由分发器 ---
+  ,navToTab(e) {
+    // 从用户点击的 DOM 节点上，抓取 data-url 属性的值
+    const targetUrl = e.currentTarget.dataset.url;
+    
+    if (!targetUrl) return;
+
+    // 因为目标都是底部 TabBar 页面，必须使用 switchTab
+    wx.switchTab({
+      url: targetUrl,
+      success: () => {
+        console.log('成功跳转至:', targetUrl);
+      },
+      fail: (err) => {
+        console.error('跳转失败, 请检查路径是否在 app.json 的 tabBar 中:', err);
+      }
+    });
   }
 })
