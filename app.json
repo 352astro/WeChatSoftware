@@ -1,12 +1,38 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/home/home",
-    "pages/carve/carve"
+    "pages/carve/carve",
+    "pages/gallery/gallery",
+    "pages/cart/cart",
+    "pages/index/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#D35400", 
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/carve/carve",
+        "text": "定制花纹"
+      },
+      {
+        "pagePath": "pages/gallery/gallery",
+        "text": "作品集"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "text": "购物车"
+      }
+    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",
