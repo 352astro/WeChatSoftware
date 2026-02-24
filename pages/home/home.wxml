@@ -1,16 +1,59 @@
-<!--pages/home/home.wxml-->
-<view class="container">
-  <view class="main-content">
-    <view class="welcome-section">
-      <text class="title">首页</text>
-      <text class="subtitle">欢迎回来，Carved Preserves 管理系统</text>
+<view class="home-page">
+  
+  <navigation-bar 
+    title="" 
+    back="{{false}}" 
+    background="transparent" 
+    homeButton="{{false}}">
+  </navigation-bar>
+
+  <view class="hero-section">
+    <view class="main-title">蜜饯<text class="text-accent">新雕</text></view>
+    <view class="sub-title">传统非遗 ✕ 数字焕新</view>
+    <view class="brand-desc">
+      将雕花蜜饯背后的民俗故事与匠人精神转化为可持续传播的数字内容。在这里，您不仅能品鉴甜蜜，更能参与设计，满足个性化情感表达。
+    </view>
+  </view>
+
+  <view class="feature-cards">
+    <view class="feature-item" bindtap="navToTab" data-url="/pages/carve/carve">
+      <view class="feature-icon">✨</view>
+      <text class="feature-name">纹样定制</text>
     </view>
     
-    <button class="card-btn" bindtap="startCarve" hover-class="btn-hover">
-      <text class="card-text">雕刻</text>
-    </button>
+    <view class="feature-item" bindtap="navToTab" data-url="/pages/gallery/gallery">
+      <view class="feature-icon">🖼️</view> 
+      <text class="feature-name">个人作品</text>
+    </view>
+    
+    <view class="feature-item" bindtap="navToTab" data-url="/pages/cart/cart">
+      <view class="feature-icon">🛍️</view>
+      <text class="feature-name">在线售卖</text>
+    </view>
   </view>
+
   <view class="footer">
     <text>Version 1.0.0</text>
+
+  <view class="craft-section">
+    <view class="section-title">精细工序 · 匠心传承</view>
+    
+    <view class="craft-list">
+      <view class="craft-card">
+        <view class="craft-step">01 / 苛求选材</view>
+        <view class="craft-text">甄选当季鲜果，果肉紧实饱满，从源头把控雕花蜜饯的极佳口感与天然本味。</view>
+      </view>
+      
+      <view class="craft-card">
+        <view class="craft-step">02 / 游刃雕刻</view>
+        <view class="craft-text">老手艺人以刀代笔，在方寸果肉间雕镂出寓意吉祥的繁复纹样，千刻万转皆是功夫。</view>
+      </view>
+      
+      <view class="craft-card">
+        <view class="craft-step">03 / 古法腌酿</view>
+        <view class="craft-text">遵循传统秘制配方，历经多道蜜渍熬煮与自然阴干，锁住果香，甜蜜绵长。</view>
+      </view>
+    </view>
   </view>
+
 </view>
