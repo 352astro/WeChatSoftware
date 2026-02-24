@@ -17,13 +17,9 @@ const upload = (options) => {
     const token = wx.getStorageSync('token');
 
     let customHeader = {
-      'Authorization': token ? 'Bearer ' + token : ''
+      'authentication': token
       // ❗ 不要手动设置 Content-Type
     };
-
-    if (options.header) {
-      Object.assign(customHeader, options.header);
-    }
 
     wx.uploadFile({
       url: BASE_URL + options.url,

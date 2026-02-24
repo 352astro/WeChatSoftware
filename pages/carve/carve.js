@@ -177,8 +177,7 @@ Page({
           url: '/api/work/upload',
           filePath: tempFilePath,
           formData: {
-            title: '我的作品',
-            description: '用户绘制'
+            title: '我的作品'//TODO保存作品时要填入作品标题
           }
         }).then(res => {
           console.log("上传成功", res);

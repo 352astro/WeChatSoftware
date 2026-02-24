@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/home/home",
-    "pages/carve/carve"
+    "pages/carve/carve",
+    "pages/worklist/worklist"
   ],
   "window": {
     "navigationBarTextStyle": "black",
