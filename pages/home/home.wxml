@@ -32,9 +32,6 @@
     </view>
   </view>
 
-  <view class="footer">
-    <text>Version 1.0.0</text>
-
   <view class="craft-section">
     <view class="section-title">精细工序 · 匠心传承</view>
     
@@ -54,6 +51,10 @@
         <view class="craft-text">遵循传统秘制配方，历经多道蜜渍熬煮与自然阴干，锁住果香，甜蜜绵长。</view>
       </view>
     </view>
+  </view>
+
+  <view class="footer">
+    <text>Version 1.0.0</text>
   </view>
 
 </view>
