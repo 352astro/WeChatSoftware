@@ -26,6 +26,7 @@ Page({
           if (data && data.token) {
             wx.setStorageSync('token', data.token);
             wx.setStorageSync('userid', data.id);
+            wx.setStorageSync('openid', data.openid);
             this.delayedNavigate();
           }
         })

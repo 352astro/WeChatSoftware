@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/home/home",
     "pages/carve/carve",
     "pages/profile/profile",
     "pages/worklist/worklist",
     "pages/gallery/gallery",
     "pages/cart/cart",
-    "pages/index/index",
     "pages/order-submit/order-submit",
     "pages/order-pay/order-pay",
     "pages/address/address"
