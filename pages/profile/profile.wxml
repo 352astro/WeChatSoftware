@@ -1,0 +1,51 @@
+<view class="profile-container">
+  
+  <navigation-bar 
+    title="我的" 
+    back="{{false}}" 
+    background="transparent" 
+    homeButton="{{false}}">
+  </navigation-bar>
+
+  <view class="user-header">
+    <view class="user-info-box">
+      <view class="avatar">👤</view>
+      <view class="user-text">
+        <text class="nickname">寻味匠人</text>
+        <text class="uid">ID: 886688</text>
+      </view>
+    </view>
+    <view class="header-decoration"></view>
+  </view>
+
+  <view class="menu-list">
+    
+    <view class="menu-item" bindtap="navTo" data-url="/pages/gallery/gallery">
+      <view class="menu-icon icon-blue">🖼️</view>
+      <text class="menu-name">我的作品集</text>
+      <view class="arrow">></view>
+    </view>
+
+    <view class="menu-item" bindtap="navTo" data-url="/pages/order-history/order-history">
+      <view class="menu-icon icon-green">📦</view>
+      <text class="menu-name">订单详情</text>
+      <view class="arrow">></view>
+    </view>
+
+    <view class="menu-item" bindtap="navTo" data-url="/pages/address/address">
+      <view class="menu-icon icon-yellow">📍</view>
+      <text class="menu-name">地址管理</text>
+      <view class="arrow">></view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="menu-item" bindtap="navToTab" data-url="/pages/carve/carve">
+      <view class="menu-icon">🎨</view>
+      <text class="menu-name">纹样绘图台</text>
+      <view class="arrow">></view>
+    </view>
+
+  </view>
+
+</view>

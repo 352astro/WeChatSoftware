@@ -1,0 +1,243 @@
+.order-submit-container {
+  min-height: 100vh;
+  background-color: #EFE8D4; /* 强制底色：宣纸米白 */
+  padding-bottom: 120rpx; /* 为底部栏留出空间 */
+}
+
+/* --- 公共卡片样式 --- */
+.card-section {
+  background-color: #FFFFFF;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+}
+
+/* --- 1. 收货地址区域 --- */
+.address-section {
+  background-color: #FFFFFF;
+  margin: 30rpx 30rpx 20rpx;
+  border-radius: 20rpx;
+  padding: 40rpx 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+  /* 顶部留出导航栏空间 (假设无特殊设置) */
+}
+
+.address-content, .no-address {
+  display: flex;
+  align-items: center;
+}
+
+.address-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  color: #588FAC; /* 靛蓝点缀 */
+}
+
+.address-details {
+  flex: 1;
+}
+
+.contact-info {
+  margin-bottom: 10rpx;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-right: 20rpx;
+}
+
+.phone {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.detail-text {
+  font-size: 26rpx;
+  color: #333333;
+  line-height: 1.4;
+}
+
+.arrow-right {
+  color: #CCCCCC;
+  font-family: monospace;
+  font-size: 32rpx;
+  margin-left: 20rpx;
+}
+
+.no-address {
+  justify-content: space-between;
+  width: 100%;
+}
+.no-address .add-icon {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #85A96F;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20rpx;
+}
+.no-address text {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333333;
+}
+
+/* --- 2. 商品明细区域 --- */
+.product-section {
+  background-color: #FFFFFF;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20rpx;
+  border-left: 6rpx solid #588FAC; /* 靛蓝装饰线 */
+  padding-left: 16rpx;
+}
+
+.product-item {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.product-img {
+  width: 120rpx;
+  height: 120rpx;
+  background-color: #F5F5F5;
+  border-radius: 12rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60rpx;
+  margin-right: 24rpx;
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.product-info .title {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-row .price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+.price-row .quantity {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* --- 3. 订单附加信息 --- */
+.additional-info-section {
+  background-color: #FFFFFF;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 10rpx 30rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #333333;
+  width: 140rpx; /* 固定宽度，方便对齐 */
+}
+
+.remark-input {
+  flex: 1;
+  font-size: 28rpx;
+  text-align: right;
+  color: #333333;
+}
+
+.value {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+/* --- 4. 底部提交控制栏 --- */
+.submit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 110rpx;
+  background-color: #FFFFFF;
+  border-top: 1rpx solid #EEEEEE;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.total-display {
+  display: flex;
+  align-items: baseline;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.final-price {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-left: 10rpx;
+}
+
+.btn-submit {
+  background-color: #85A96F; /* 沉稳绿 */
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: bold;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 38rpx;
+  padding: 0 50rpx;
+  margin: 0;
+}
+
+.btn-disabled {
+  background-color: #CCCCCC; /* 灰色表示不可用 */
+}
+
+/* --- 工具类 --- */
+.text-green {
+  color: #85A96F; 
+}
+.bottom-spacer {
+  height: 120rpx;
+}

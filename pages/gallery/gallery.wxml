@@ -1,2 +1,40 @@
-<!--pages/gallery.wxml-->
-<text>pages/gallery.wxml</text>
+<view class="gallery-container">
+  <navigation-bar title="个人作品集" back="{{true}}" ></navigation-bar>
+
+  <scroll-view class="work-scroll" scroll-y="true" bindscrolltolower="onLoadMore">
+    <view style="height: 60rpx;"></view>
+    <view class="work-grid">
+      <view class="work-column">
+        <view class="work-card" wx:for="{{leftList}}" wx:key="index">
+          <image class="work-image" src="{{item.imageUrl}}" mode="widthFix"></image>
+          <view class="work-info">
+            <text class="work-title">{{item.title}}</text>
+            <view class="work-author">
+              <text class="author-tag">匠人</text>
+              <text class="author-id">ID: {{item.userId}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="work-column">
+        <view class="work-card" wx:for="{{rightList}}" wx:key="index">
+          <image class="work-image" src="{{item.imageUrl}}" mode="widthFix"></image>
+          <view class="work-info">
+            <text class="work-title">{{item.title}}</text>
+            <view class="work-author">
+              <text class="author-tag">匠人</text>
+              <text class="author-id">ID: {{item.userId}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{workList.length === 0}}">
+      <view class="empty-icon">🎨</view>
+      <text>暂无作品，去雕刻一个吧</text>
+    </view>
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+</view>

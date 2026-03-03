@@ -15,20 +15,20 @@
     </view>
   </view>
 
-  <view class="feature-cards">
+<view class="feature-cards">
     <view class="feature-item" bindtap="navToTab" data-url="/pages/carve/carve">
       <view class="feature-icon">✨</view>
-      <text class="feature-name">纹样定制</text>
-    </view>
-    
-    <view class="feature-item" bindtap="navToTab" data-url="/pages/gallery/gallery">
-      <view class="feature-icon">🖼️</view> 
-      <text class="feature-name">个人作品</text>
+      <text class="feature-name">纹样雕刻</text>
     </view>
     
     <view class="feature-item" bindtap="navToTab" data-url="/pages/cart/cart">
       <view class="feature-icon">🛍️</view>
-      <text class="feature-name">在线售卖</text>
+      <text class="feature-name">在线选购</text>
+    </view>
+
+    <view class="feature-item" bindtap="navToTab" data-url="/pages/profile/profile">
+      <view class="feature-icon">👤</view>
+      <text class="feature-name">个人中心</text>
     </view>
   </view>
 
@@ -53,8 +53,5 @@
     </view>
   </view>
 
-  <view class="footer">
-    <text>Version 1.0.0</text>
-  </view>
 
 </view>

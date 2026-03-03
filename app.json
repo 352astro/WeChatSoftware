@@ -2,10 +2,14 @@
   "pages": [
     "pages/home/home",
     "pages/carve/carve",
+    "pages/profile/profile",
     "pages/worklist/worklist",
     "pages/gallery/gallery",
     "pages/cart/cart",
-    "pages/index/index"
+    "pages/index/index",
+    "pages/order-submit/order-submit",
+    "pages/order-pay/order-pay",
+    "pages/address/address"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -13,7 +17,7 @@
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#D35400",
+    "selectedColor": "#85A96F",
     "backgroundColor": "#ffffff",
     "borderStyle": "white",
     "list": [
@@ -23,15 +27,15 @@
       },
       {
         "pagePath": "pages/carve/carve",
-        "text": "定制花纹"
-      },
-      {
-        "pagePath": "pages/gallery/gallery",
-        "text": "作品集"
+        "text": "纹样雕刻"
       },
       {
         "pagePath": "pages/cart/cart",
-        "text": "购物车"
+        "text": "产品选购"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
       }
     ]
   },

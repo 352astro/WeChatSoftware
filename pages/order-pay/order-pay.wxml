@@ -1,0 +1,27 @@
+<view class="pay-container">
+  <navigation-bar title="订单支付" back="{{true}}" background="#EFE8D4"></navigation-bar>
+
+  <view class="pay-header">
+    <view class="status-icon">⏳</view>
+    <view class="pay-amount">
+      <text class="currency">¥</text>
+      <text class="amount-num">{{orderAmount}}</text>
+    </view>
+    <view class="order-no">订单号：{{orderNo}}</view>
+  </view>
+
+  <view class="pay-method-list">
+    <view class="method-item">
+      <view class="method-left">
+        <view class="wechat-icon">🟢</view>
+        <text>微信支付</text>
+      </view>
+      <radio value="wechat" checked="true" color="#85A96F"></radio>
+    </view>
+  </view>
+
+  <view class="footer-btn-group">
+    <button class="btn-pay" bindtap="requestPayment">立即支付</button>
+    <view class="pay-tip">请在 15 分钟内完成支付</view>
+  </view>
+</view>

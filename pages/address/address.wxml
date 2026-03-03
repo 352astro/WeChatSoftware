@@ -1,0 +1,21 @@
+<view class="address-container">
+  <navigation-bar title="地址管理" back="{{true}}" background="#EFE8D4"></navigation-bar>
+
+  <scroll-view class="address-scroll" scroll-y="true">
+    <view class="address-list" wx:if="{{addressList.length > 0}}">
+      <view class="address-card" wx:for="{{addressList}}" wx:key="id">
+        </view>
+    </view>
+    
+    <view class="empty-wrapper" wx:else>
+      <view class="empty-box">
+        <view class="empty-icon">📍</view>
+        <text class="empty-text">暂无收货地址</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <button class="btn-add" bindtap="addAddress">+ 新增收货地址</button>
+  </view>
+</view>

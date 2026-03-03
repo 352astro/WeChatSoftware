@@ -1,0 +1,74 @@
+<view class="order-submit-container">
+  
+  <navigation-bar 
+    title="确认订单" 
+    back="{{true}}" 
+    background="#EFE8D4">
+  </navigation-bar>
+
+  <view class="address-section" bindtap="goToAddressSelect">
+    <block wx:if="{{addressInfo.id}}">
+      <view class="address-content">
+         <view class="address-icon">📍</view>
+         <view class="address-details">
+           <view class="contact-info">
+             <text class="name">{{addressInfo.consignee}}</text>
+             <text class="phone">{{addressInfo.phone}}</text>
+           </view>
+           <view class="detail-text">{{addressInfo.detailAddress}}</view>
+         </view>
+         <view class="arrow-right">></view>
+      </view>
+    </block>
+    <block wx:else>
+       <view class="no-address">
+         <view class="add-icon">+</view>
+         <text>请选择收货地址</text>
+         <view class="arrow-right">></view>
+       </view>
+    </block>
+  </view>
+
+  <view class="product-section">
+    <view class="section-title">商品明细</view>
+    
+    <view class="product-item">
+      <view class="product-img">🍑</view>
+      <view class="product-info">
+        <text class="title">青梅玉露·基础雕花原材</text>
+        <view class="price-row">
+           <text class="price">¥ 38.00</text>
+           <text class="quantity">x 1</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="additional-info-section">
+     <view class="info-row">
+        <text class="label">买家留言</text>
+        <input class="remark-input" placeholder="选填，请先和商家协商一致" bindinput="onRemarkInput" />
+     </view>
+     <view class="info-row">
+        <text class="label">商品总额</text>
+        <text class="value text-green">¥ {{totalAmountStr}}</text>
+     </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+
+  <view class="submit-bar">
+    <view class="total-display">
+       <text>实付款：</text>
+       <text class="final-price text-green">¥ {{totalAmountStr}}</text>
+    </view>
+    <button 
+      class="btn-submit {{!addressInfo.id ? 'btn-disabled' : ''}}" 
+      bindtap="submitOrder"
+      disabled="{{!addressInfo.id || isSubmitting}}"
+    >
+      {{isSubmitting ? '提交中...' : '提交订单'}}
+    </button>
+  </view>
+
+</view>

@@ -1,0 +1,80 @@
+.pay-container {
+  min-height: 100vh;
+  background-color: #EFE8D4; /* 强制米白底色 */
+  display: flex;
+  flex-direction: column;
+}
+
+.pay-header {
+  padding: 80rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FFFFFF;
+  margin-bottom: 20rpx;
+}
+
+.status-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.pay-amount {
+  color: #85A96F; /* 沉稳绿强调金额 */
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.currency { font-size: 40rpx; }
+.amount-num { font-size: 72rpx; }
+
+.order-no {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.pay-method-list {
+  background-color: #FFFFFF;
+  padding: 0 30rpx;
+}
+
+.method-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.method-left {
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.wechat-icon {
+  margin-right: 20rpx;
+  font-size: 40rpx;
+}
+
+.footer-btn-group {
+  margin-top: auto;
+  padding: 40rpx 30rpx 80rpx;
+}
+
+.btn-pay {
+  background-color: #85A96F;
+  color: #FFFFFF;
+  font-size: 34rpx;
+  font-weight: bold;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+}
+
+.pay-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 24rpx;
+}
