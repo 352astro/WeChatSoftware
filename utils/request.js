@@ -12,13 +12,8 @@ const request = (options) => {
     // 预先处理好 header
     let customHeader = {
       'Content-Type': 'application/json',
-      'Authorization': token ? 'Bearer ' + token : ''
+      'authentication': token
     };
-
-    // 使用 Object.assign 代替 ... 展开运算符
-    if (options.header) {
-      Object.assign(customHeader, options.header);
-    }
 
     wx.request({
       url: BASE_URL + options.url,
