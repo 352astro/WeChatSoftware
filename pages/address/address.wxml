@@ -5,7 +5,7 @@
         <text class="back-icon">←</text>
       </view>
       
-      <view class="nav-title">地址管理</view> 
+      <view class="nav-title">{{selectMode ? '选择收货地址' : '地址管理'}}</view> 
       
       <view class="nav-right"></view>
     </view>
@@ -15,8 +15,40 @@
 
   <scroll-view class="address-scroll" scroll-y="true">
     <view class="address-list" wx:if="{{addressList.length > 0}}">
-      <view class="address-card" wx:for="{{addressList}}" wx:key="id">
+      <view 
+        class="address-card {{selectMode ? 'address-card-selectable' : ''}}" 
+        wx:for="{{addressList}}" 
+        wx:for-item="item" 
+        wx:key="id"
+        bindtap="onCardTap"
+        data-item="{{item}}"
+      >
+        <!-- 姓名 + 手机号 + 默认标签 -->
+        <view class="user-info">
+          <text class="name">{{item.name || item.consignee || item.receiverName}}</text>
+          <text class="phone">{{item.phone || item.phoneNumber || item.receiverPhone}}</text>
+          <text class="tag" wx:if="{{item.isDefault === 1 || item.isDefault === true}}">默认</text>
         </view>
+        <!-- 详细地址 -->
+        <view class="address-detail">
+          {{item.province || item.provinceName}}{{item.city || item.cityName}}{{item.district || item.districtName}}{{item.detail || item.detailAddress}}
+        </view>
+        <!-- 底部操作栏：选择模式下隐藏编辑/删除，仅显示"点击选择"提示 -->
+        <view class="card-footer">
+          <view class="default-row" catchtap="setDefault" data-id="{{item.id}}">
+            <text class="{{item.isDefault === 1 || item.isDefault === true ? 'text-green' : 'text-grey'}}">
+              {{item.isDefault === 1 || item.isDefault === true ? '✔ 默认地址' : '设为默认'}}
+            </text>
+          </view>
+          <view class="operation-row" wx:if="{{!selectMode}}">
+            <text class="op-btn" catchtap="editAddress" data-item="{{item}}">编辑</text>
+            <text class="op-btn" catchtap="deleteAddress" data-id="{{item.id}}">删除</text>
+          </view>
+          <view wx:else>
+            <text class="op-btn text-green">点击选择 ›</text>
+          </view>
+        </view>
+      </view>
     </view>
     
     <view class="empty-wrapper" wx:else>

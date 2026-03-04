@@ -10,7 +10,8 @@
     "pages/order-submit/order-submit",
     "pages/order-pay/order-pay",
     "pages/address/address",
-    "pages/order-history/order-history"
+    "pages/order-history/order-history",
+    "pages/address-edit/address-edit"
   ],
   "window": {
     "navigationBarTextStyle": "black",

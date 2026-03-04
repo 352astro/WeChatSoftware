@@ -1,0 +1,106 @@
+.custom-navbar { position: fixed; top: 0; left: 0; width: 100%; background-color: #85A96F; z-index: 999; }
+
+.navbar-content { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 30rpx; }
+
+.nav-left, .nav-right { width: 60rpx; height: 100%; display: flex; align-items: center; }
+
+.back-icon { font-size: 40rpx; color: #333333; font-weight: bold; }
+
+.nav-title { flex: 1; text-align: center; font-size: 34rpx; font-weight: bold; color: #333333; }
+
+.nav-placeholder { width: 100%; background-color: transparent; }
+
+/* --- 页面主体样式 --- */
+.edit-container {
+  min-height: 100vh;
+  background-color: #EFE8D4; /* 宣纸米白 */
+  padding-bottom: 160rpx;
+}
+
+.form-group {
+  background-color: #FFFFFF;
+  margin: 30rpx;
+  border-radius: 20rpx;
+  padding: 0 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.03);
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.form-item.align-top {
+  align-items: flex-start;
+}
+
+.form-item.border-none {
+  border-bottom: none;
+  justify-content: space-between;
+}
+
+.label {
+  width: 160rpx;
+  font-size: 30rpx;
+  color: #333333;
+}
+
+.input-field {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333333;
+}
+
+.textarea-field {
+  flex: 1;
+  height: 120rpx;
+  font-size: 30rpx;
+  color: #333333;
+  line-height: 1.4;
+}
+
+.placeholder {
+  color: #CCCCCC;
+}
+
+/* 标签样式 */
+.tag-group {
+  display: flex;
+  gap: 20rpx;
+}
+
+.tag {
+  padding: 6rpx 24rpx;
+  border-radius: 30rpx;
+  border: 1rpx solid #DDDDDD;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.tag-active {
+  background-color: #588FAC; /* 选中状态为靛蓝 */
+  border-color: #588FAC;
+  color: #FFFFFF;
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 30rpx 40rpx calc(30rpx + env(safe-area-inset-bottom));
+  background-color: #EFE8D4;
+  box-sizing: border-box;
+}
+
+.btn-save {
+  background-color: #85A96F; /* 沉稳绿 */
+  color: #FFFFFF;
+  border-radius: 50rpx;
+  font-weight: bold;
+  height: 88rpx;
+  line-height: 88rpx;
+}

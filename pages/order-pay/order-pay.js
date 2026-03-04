@@ -3,14 +3,29 @@ import request from '../../utils/request.js';
 Page({
   data: {
     orderNo: '',
-    orderAmount: '0.00'
+    orderAmount: '0.00',
+    statusBarHeight: 20
   },
 
   onLoad(options) {
+    const systemInfo = wx.getSystemInfoSync();
+    this.setData({
+      statusBarHeight: systemInfo.statusBarHeight
+    });
     if (options.orderNo) {
       this.setData({ orderNo: options.orderNo });
       // 实际开发中，这里可以再调一次订单详情接口获取最新金额
     }
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => {
+        // 兜底跳转回个人中心或主页
+        wx.switchTab({ url: '/pages/cart/cart' });
+      }
+    });
   },
 
   // 核心支付逻辑

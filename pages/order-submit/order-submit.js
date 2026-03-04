@@ -2,41 +2,59 @@ import request from '../../utils/request.js';
 
 Page({
   data: {
-    // 假设从上个页面传递过来的总金额
-    totalAmount: 3800, // 为避免浮点数精度问题，建议使用分作为单位处理逻辑，展示时再转换为元
-    totalAmountStr: '38.00', 
+    productList: [], // 新增：用来接收真实的商品列表
+    totalAmount: 0,  // 用于传给后端的总金额（分或元，取决于后端要求）
+    totalAmountStr: '0.00', // 用于前端展示的总金额字符串
     remark: '',
-    addressInfo: {}, // 存储收货地址信息
-    isSubmitting: false // 防止重复提交
+    addressInfo: {},
+    isSubmitting: false,
+    statusBarHeight: 20 // 兼容你刚刚加的自定义导航栏
   },
 
   onLoad(options) {
-    // 在实际开发中，这里应该解析 options 拿到商品列表和总价
+    // 1. 动态获取状态栏高度（如果已经加了自定义顶栏的话）
+    const systemInfo = wx.getSystemInfoSync();
+    this.setData({ statusBarHeight: systemInfo.statusBarHeight });
+
+    // 2. ⚡️ 核心提取逻辑：从缓存中读取购物车传过来的真实数据
+    const selectedProducts = wx.getStorageSync('selected_products') || [];
+    const totalAmountStr = wx.getStorageSync('total_amount') || '0.00';
+
+    // 假设你的后端提交订单要求金额是“分”为单位（很多支付接口要求这样，如果不要求请自行调整）
+    // 这里我们将 38.00 转换为 3800
+    const totalAmount = Math.round(parseFloat(totalAmountStr) * 100);
+
+    // 3. 将真实数据绑定到页面
+    this.setData({
+      productList: selectedProducts,
+      totalAmountStr: totalAmountStr,
+      totalAmount: totalAmount
+    });
+
+    // 4. 拉取默认收货地址
     this.fetchDefaultAddress();
   },
 
   onShow() {
-    // 如果用户从地址选择页面返回，我们可能需要在这里刷新选中的地址
-    // 实际项目中可以通过全局状态或 eventChannel 传递选中的地址
+    // 从地址页选择返回后，读取用户选中的地址
+    const selected = wx.getStorageSync('selected_address');
+    if (selected && selected.id) {
+      this.setData({ addressInfo: selected });
+      wx.removeStorageSync('selected_address');
+    }
   },
 
-  // 获取默认地址信息 (暂用模拟数据，假设接口存在)
+  // 获取默认地址（调用真实接口）
   fetchDefaultAddress() {
-    // 模拟接口调用：GET /api/address/default
-    // request({ url: '/api/address/default', method: 'GET' }).then(...)
-    
-    // 使用模拟数据
-    const mockAddress = {
-      id: 101,
-      consignee: "李四",
-      phone: "13800138000",
-      detailAddress: "浙江省杭州市西湖区某某街道XX号",
-      label: "家"
-    };
-    
-    this.setData({
-      addressInfo: mockAddress
-    });
+    request({ url: '/api/address/default', method: 'GET' })
+      .then(res => {
+        if ((res.data.code === 0 || res.data.code === 200) && res.data.data) {
+          this.setData({ addressInfo: res.data.data });
+        }
+      })
+      .catch(err => {
+        console.warn('获取默认地址失败:', err);
+      });
   },
 
   // 监听备注输入
@@ -49,10 +67,16 @@ Page({
   // 跳转到地址选择页面
   goToAddressSelect() {
     wx.navigateTo({
-      url: '/pages/address-select/address-select', // 假设的地址选择页面路径
-      fail: (err) => {
-         console.warn("地址选择页面未就绪", err);
-         wx.showToast({ title: '选择地址功能开发中', icon: 'none' });
+      url: '/pages/address/address?from=order-submit'
+    });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => {
+        // 兜底跳转回个人中心或主页
+        wx.switchTab({ url: '/pages/cart/cart' });
       }
     });
   },

@@ -117,6 +117,16 @@
 .text-green { color: #85A96F; }
 .text-grey { color: #999; }
 
+/* 选择模式下卡片可点击的视觉反馈 */
+.address-card-selectable {
+  border: 2rpx solid transparent;
+  transition: border-color 0.2s;
+}
+.address-card-selectable:active {
+  border-color: #85A96F;
+  background-color: #F7FAF4;
+}
+
 .bottom-bar {
 position: fixed;
   bottom: 0;

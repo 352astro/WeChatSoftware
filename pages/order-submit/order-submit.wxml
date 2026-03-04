@@ -1,10 +1,18 @@
 <view class="order-submit-container">
   
-  <navigation-bar 
-    title="确认订单" 
-    back="{{true}}" 
-    background="#EFE8D4">
-  </navigation-bar>
+<view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-content">
+      <view class="nav-left" bindtap="goBack">
+        <text class="back-icon">←</text>
+      </view>
+      
+      <view class="nav-title">确认订单</view> 
+      
+      <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <view class="nav-placeholder" style="height: {{statusBarHeight + 44}}px;"></view>
 
   <view class="address-section" bindtap="goToAddressSelect">
     <block wx:if="{{addressInfo.id}}">
@@ -12,10 +20,10 @@
          <view class="address-icon">📍</view>
          <view class="address-details">
            <view class="contact-info">
-             <text class="name">{{addressInfo.consignee}}</text>
-             <text class="phone">{{addressInfo.phone}}</text>
+             <text class="name">{{addressInfo.name || addressInfo.consignee || addressInfo.receiverName}}</text>
+             <text class="phone">{{addressInfo.phone || addressInfo.phoneNumber || addressInfo.receiverPhone}}</text>
            </view>
-           <view class="detail-text">{{addressInfo.detailAddress}}</view>
+           <view class="detail-text">{{addressInfo.province || addressInfo.provinceName}}{{addressInfo.city || addressInfo.cityName}}{{addressInfo.district || addressInfo.districtName}}{{addressInfo.detail || addressInfo.detailAddress}}</view>
          </view>
          <view class="arrow-right">></view>
       </view>
@@ -32,13 +40,18 @@
   <view class="product-section">
     <view class="section-title">商品明细</view>
     
-    <view class="product-item">
-      <view class="product-img">🍑</view>
+    <view class="product-item" wx:for="{{productList}}" wx:key="id">
+      
+      <view class="product-img">
+        <image wx:if="{{item.imageUrl || item.image_url}}" src="{{item.imageUrl || item.image_url}}" mode="aspectFill" style="width:100%; height:100%; border-radius:12rpx;"></image>
+        <text wx:else>📦</text>
+      </view>
+
       <view class="product-info">
-        <text class="title">青梅玉露·基础雕花原材</text>
+        <text class="title">{{item.name}}</text>
         <view class="price-row">
-           <text class="price">¥ 38.00</text>
-           <text class="quantity">x 1</text>
+           <text class="price">¥ {{item.price}}</text>
+           <text class="quantity">x {{item.count}}</text>
         </view>
       </view>
     </view>
