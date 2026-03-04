@@ -4,9 +4,9 @@ Page({
   data: {
     workList: [],
     leftList: [],
-    rightList: []
+    rightList: [],
+    statusBarHeight: 20 // 默认给一个 20px 的状态栏高度兜底
   },
-
   /**
  * 页面显示时触发的生命周期回调，用于拉取并更新最新的作品列表
  * @returns {void} 无返回值
@@ -14,6 +14,23 @@ Page({
  */
 onShow() {
     this.fetchWorkList();
+  },
+
+  onLoad() {
+    const systemInfo = wx.getSystemInfoSync();
+    this.setData({
+      statusBarHeight: systemInfo.statusBarHeight
+    });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => {
+        // 如果没有上一页（分享卡片直接进入），兜底跳回个人中心
+        wx.switchTab({ url: '/pages/profile/profile' });
+      }
+    });
   },
 
   // 获取作品集列表

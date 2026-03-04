@@ -1,0 +1,167 @@
+/* pages/order-history/order-history.wxss */
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #85A96F;
+  z-index: 999;
+}
+
+.navbar-content {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+
+.nav-left, .nav-right {
+  width: 60rpx; /* 左右宽度一致，保证标题绝对居中 */
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.back-icon {
+  font-size: 40rpx;
+  color: #333333;
+  font-weight: bold;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.nav-placeholder {
+  width: 100%;
+  background-color: transparent;
+}
+
+.history-container {
+  height: 100vh;
+  background-color: #EFE8D4; 
+  display: flex;
+  flex-direction: column;
+}
+
+.order-scroll {
+  flex: 1;
+  height: 0; 
+}
+
+.order-list {
+  padding: 20rpx 30rpx;
+}
+
+.order-card {
+  background-color: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+}
+
+/* --- 卡片头部 --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.order-no {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.order-no .value {
+  color: #333333;
+  font-family: monospace;
+}
+
+.order-status {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.text-green { color: #85A96F; } /* 沉稳绿强调状态 */
+
+/* --- 卡片中部 --- */
+.card-body {
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.product-brief {
+  display: flex;
+  align-items: center;
+}
+
+.brief-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background-color: #FAFAFA;
+  border-radius: 12rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.brief-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brief-text .title {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.brief-text .desc {
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+
+/* --- 卡片底部 --- */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24rpx 0;
+}
+
+.btn-detail {
+  border: 2rpx solid #588FAC; /* 靛蓝边框点缀 */
+  color: #588FAC;
+  font-size: 26rpx;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  font-weight: 500;
+}
+
+/* --- 空状态 --- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999999;
+}

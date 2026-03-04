@@ -9,7 +9,8 @@
     "pages/cart/cart",
     "pages/order-submit/order-submit",
     "pages/order-pay/order-pay",
-    "pages/address/address"
+    "pages/address/address",
+    "pages/order-history/order-history"
   ],
   "window": {
     "navigationBarTextStyle": "black",

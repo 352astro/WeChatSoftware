@@ -1,0 +1,45 @@
+<view class="history-container">
+  
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-content">
+      <view class="nav-left" bindtap="goBack">
+        <text class="back-icon">←</text>
+      </view>
+      <view class="nav-title">我的订单</view>
+      <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <view class="nav-placeholder" style="height: {{statusBarHeight + 44}}px;"></view>
+
+  <scroll-view class="order-scroll" scroll-y="true">
+    <view class="order-list" wx:if="{{orderList.length > 0}}">
+      <view class="order-card" wx:for="{{orderList}}" wx:key="orderId">
+        <view class="card-header">
+          <view class="order-no">
+            <text class="label">订单号：</text>
+            <text class="value">{{item.orderId}}</text>
+          </view>
+          <text class="order-status text-green">已完成</text>
+        </view>
+        <view class="card-body">
+          <view class="product-brief">
+            <view class="brief-icon">📦</view>
+            <view class="brief-text">
+              <text class="title">蜜饯新雕·定制/选购商品</text>
+              <text class="desc">包含雕花原材或周边等</text>
+            </view>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="btn-detail" bindtap="goToDetail" data-id="{{item.orderId}}">查看详情</view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-state" wx:else>
+      <view class="empty-icon">🧾</view>
+      <text class="empty-text">暂无历史订单</text>
+    </view>
+  </scroll-view>
+</view>

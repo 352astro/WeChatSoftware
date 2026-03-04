@@ -1,47 +1,29 @@
-<view class="shop-container">
-  
-  <navigation-bar 
-    title="在线售卖" 
-    back="{{false}}" 
-    background="#EFE8D4" 
-    homeButton="{{false}}">
-  </navigation-bar>
-
-  <scroll-view class="product-list" scroll-y="true">
+<scroll-view class="product-list" scroll-y="true">
     
-    <view class="product-card">
-      <view class="product-img-box">🍑</view>
-      <view class="product-info">
-        <view class="product-title">青梅玉露·基础雕花原材</view>
-        <view class="product-desc">肉厚核小，适合初学者刻制纹样</view>
-        <view class="product-tags">
-          <text class="tag">热销</text>
-        </view>
-        <view class="price-row">
-          <text class="price">¥ 38.00</text>
-          <view class="stepper">
-            <view class="btn-minus btn-disabled">-</view>
-            <view class="count">0</view>
-            <view class="btn-plus">+</view>
-          </view>
-        </view>
+    <view class="product-card" wx:for="{{cartList}}" wx:key="id">
+      
+      <view class="product-img-box">
+        <image wx:if="{{item.imageUrl && item.imageUrl.length > 5}}" src="{{item.imageUrl}}" mode="aspectFill" style="width:100%; height:100%; border-radius:12rpx;"></image>
+        <text wx:else>{{item.imageUrl || '📦'}}</text>
       </view>
-    </view>
-
-    <view class="product-card">
-      <view class="product-img-box">🍊</view>
+      
       <view class="product-info">
-        <view class="product-title">金桔祥瑞·大师定制款</view>
-        <view class="product-desc">非遗传承人纯手工雕刻，古法熬制</view>
-        <view class="product-tags">
-          <text class="tag">名家工坊</text>
-        </view>
+        <view class="product-title">{{item.name}}</view>
+        <view class="product-desc">{{item.description}}</view>
+        
         <view class="price-row">
-          <text class="price">¥ 128.00</text>
+          <text class="price">¥ {{item.price}}</text>
+          
           <view class="stepper">
-            <view class="btn-minus">-</view>
-            <view class="count">1</view>
-            <view class="btn-plus">+</view>
+            <view class="btn-minus {{item.count === 0 ? 'btn-disabled' : ''}}" 
+                  bindtap="changeCount" 
+                  data-index="{{index}}" 
+                  data-type="minus">-</view>
+            <view class="count">{{item.count}}</view>
+            <view class="btn-plus" 
+                  bindtap="changeCount" 
+                  data-index="{{index}}" 
+                  data-type="plus">+</view>
           </view>
         </view>
       </view>
@@ -49,19 +31,3 @@
 
     <view class="list-spacer"></view>
   </scroll-view>
-
-  <view class="checkout-bar">
-    <view class="cart-icon-wrap">
-      <view class="cart-icon">🛒</view>
-      <view class="cart-badge">1</view>
-    </view>
-    
-    <view class="total-info">
-      <text class="total-label">合计：</text>
-      <text class="total-price">¥ 128.00</text>
-    </view>
-    
-    <view class="btn-submit" bindtap="goToSubmitOrder">去结算</view>
-  </view>
-
-</view>

@@ -2,11 +2,29 @@ import request from '../../utils/request.js';
 
 Page({
   data: {
-    addressList: []
+    addressList: [],
+    statusBarHeight: 20
   },
 
   onShow() {
     this.fetchAddressList();
+  },
+
+  onLoad() {
+    const systemInfo = wx.getSystemInfoSync();
+    this.setData({
+      statusBarHeight: systemInfo.statusBarHeight
+    });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => {
+        // 如果没有上一页（分享卡片直接进入），兜底跳回个人中心
+        wx.switchTab({ url: '/pages/profile/profile' });
+      }
+    });
   },
 
   // 1. 查询所有地址

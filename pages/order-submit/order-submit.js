@@ -58,61 +58,34 @@ Page({
   },
 
   // 核心逻辑：提交订单
-  submitOrder() {
-    const { addressInfo, remark, totalAmount, isSubmitting } = this.data;
+    submitOrder() {
+      const { addressInfo, remark, totalAmount } = this.data;
 
-    // 基础校验
-    if (!addressInfo.id) {
-      wx.showToast({ title: '请选择收货地址', icon: 'none' });
-      return;
-    }
-    if (isSubmitting) return;
-
-    this.setData({ isSubmitting: true });
-    wx.showLoading({ title: '正在提交...', mask: true });
-
-    // 构造请求数据 (对照接口文档 POST /api/order/submit)
-    const requestData = {
-      addressId: addressInfo.id,
-      remark: remark,
-      amount: totalAmount 
-    };
-
-    request({
-      url: '/api/order/submit',
-      method: 'POST',
-      data: requestData
-    })
-    .then(res => {
-      wx.hideLoading();
-      this.setData({ isSubmitting: false });
-
-      const data = res.data.data;
-      if (res.data.code === 0 && data && data.orderNo) {
-        wx.showToast({ title: '订单提交成功', icon: 'success' });
-        
-        // 提交成功后，携带订单号跳转至支付页面
-        setTimeout(() => {
-          wx.navigateTo({
-            url: `/pages/order-pay/order-pay?orderNo=${data.orderNo}`
-          });
-        }, 1500);
-      } else {
-         wx.showToast({ title: res.data.message || '提交失败', icon: 'none' });
+      if (!addressInfo.id) {
+        wx.showToast({ title: '请选择地址', icon: 'none' });
+        return;
       }
-    })
-    .catch(err => {
-      wx.hideLoading();
-      this.setData({ isSubmitting: false });
-      
-      // 调试期间处理接口不通的情况：模拟成功跳转
-      console.error('提交订单接口失败, 模拟跳转支付页', err);
-      wx.showToast({ title: '模拟提交成功', icon: 'none' });
-      setTimeout(() => {
+
+      wx.showLoading({ title: '下单中...', mask: true });
+
+      // 对接接口：POST /api/order/submit
+      request({
+        url: '/api/order/submit',
+        method: 'POST',
+        data: {
+          addressId: addressInfo.id, // 地址ID
+          remark: remark || '',      // 备注
+          amount: totalAmount * 100  // 总金额（建议转为分发送）
+        }
+      }).then(res => {
+        wx.hideLoading();
+        if (res.data.code === 0) {
+          const { orderNo } = res.data.data; // 获取返回的订单号
+          // 下单成功，跳转支付页
           wx.navigateTo({
-             url: `/pages/order-pay/order-pay?orderNo=MOCK_ORDER_12345`
+            url: `/pages/order-pay/order-pay?orderNo=${orderNo}&amount=${totalAmount}`
           });
-      }, 1000);
-    });
-  }
+        }
+      });
+    },
 });

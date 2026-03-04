@@ -1,10 +1,10 @@
 // pages/carve/carve.js
 import upload from '../../utils/upload';
 
-const BG_COLOR = '#3cb4a0';
+const BG_COLOR = '#85A96F';
 const TOOL_COLOR_MAP = {
-  carve: '#ffcdb2',
-  hollow: '#ffffff',
+  carve: '#EFE8D4',
+  hollow: '#FFFFFF',
   eraser: BG_COLOR
 };
 
