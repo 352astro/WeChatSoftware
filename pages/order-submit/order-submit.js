@@ -103,7 +103,7 @@ Page({
         }
       }).then(res => {
         wx.hideLoading();
-        if (res.data.code === 0) {
+        if (res.data.code === 200) {
           const { orderNo } = res.data.data; // 获取返回的订单号
           // 下单成功，跳转支付页
           wx.navigateTo({

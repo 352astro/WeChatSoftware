@@ -3,7 +3,7 @@ import request from '../../utils/request.js';
 Page({
   data: {
     orderNo: '',
-    orderAmount: '0.00',
+    orderAmount: '0.01',
     statusBarHeight: 20
   },
 
@@ -35,9 +35,9 @@ Page({
       request({
         url: '/api/order/payment',
         method: 'PUT',
-        data: { orderNo: orderNo } // 传入订单号
+        data: { orderNumber: orderNo } // 传入订单号
       }).then(res => {
-        const payData = res.data; // 包含 nonceStr, paySign, timeStamp, signType, packageStr
+        const payData = res.data.data; // 包含 nonceStr, paySign, timeStamp, signType, packageStr
 
         // 调用微信原生支付
         wx.requestPayment({
@@ -49,6 +49,9 @@ Page({
           success: () => {
             wx.showToast({ title: '支付成功', icon: 'success' });
             setTimeout(() => wx.reLaunch({ url: '/pages/profile/profile' }), 1500);
+          },
+          fail: (e) => {
+            console.error('requestPayment fail:', e);
           }
         });
       });
