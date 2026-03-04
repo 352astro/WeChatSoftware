@@ -1,15 +1,28 @@
-<scroll-view class="product-list" scroll-y="true">
+<view class="shop-container">
+  
+  <navigation-bar 
+    title="在线售卖" 
+    back="{{false}}" 
+    background="#EFE8D4" 
+    homeButton="{{false}}">
+  </navigation-bar>
+
+  <scroll-view class="product-list" scroll-y="true">
     
     <view class="product-card" wx:for="{{cartList}}" wx:key="id">
       
       <view class="product-img-box">
-        <image wx:if="{{item.imageUrl && item.imageUrl.length > 5}}" src="{{item.imageUrl}}" mode="aspectFill" style="width:100%; height:100%; border-radius:12rpx;"></image>
-        <text wx:else>{{item.imageUrl || '📦'}}</text>
+        <image wx:if="{{item.imageUrl || item.image_url}}" src="{{item.imageUrl || item.image_url}}" mode="aspectFill" style="width:100%; height:100%; border-radius:12rpx;"></image>
+        <text wx:else>📦</text>
       </view>
       
       <view class="product-info">
         <view class="product-title">{{item.name}}</view>
         <view class="product-desc">{{item.description}}</view>
+        
+        <view class="product-tags">
+          <text class="tag">甄选原材</text>
+        </view>
         
         <view class="price-row">
           <text class="price">¥ {{item.price}}</text>
@@ -31,3 +44,19 @@
 
     <view class="list-spacer"></view>
   </scroll-view>
+
+  <view class="checkout-bar">
+    <view class="cart-icon-wrap">
+      <view class="cart-icon">🛒</view>
+      <view class="cart-badge" wx:if="{{totalAmount > 0}}">!</view>
+    </view>
+    
+    <view class="total-info">
+      <text class="total-label">合计：</text>
+      <text class="total-price">¥ {{totalAmount}}</text>
+    </view>
+    
+    <view class="btn-submit" bindtap="goToSubmitOrder">去结算</view>
+  </view>
+
+</view>

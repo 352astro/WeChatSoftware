@@ -21,25 +21,42 @@ Page({
     })
     .then(res => {
       wx.hideLoading();
-      if (res.data.code === 0 && res.data.data) {
-        const products = res.data.data;
-        
-        // 为每个真实商品注入 count 属性，用于前端购物车逻辑
+      
+      console.log('后端返回的原始数据:', res.data);
+      let products = [];
+
+      if ((res.data.code === 0 || res.data.code === 200) && Array.isArray(res.data.data)) {
+        // 格式 1: 标准 { code: 200, data: [...] }
+        products = res.data.data;
+      } else if ((res.data.code === 0 || res.data.code === 200) && res.data.data && Array.isArray(res.data.data.records)) {
+        // 格式 2: 分页对象 
+        products = res.data.data.records;
+      } else if (Array.isArray(res.data)) {
+        products = res.data;
+      }
+
+      // 如果成功提取到了数组，开始渲染
+      if (products && products.length > 0) {
         const cartList = products.map(item => {
           return {
             ...item,
+            // 兼容后端的蛇形命名 (image_url) 和驼峰命名 (imageUrl)
+            imageUrl: item.imageUrl || item.image_url || '📦', 
             count: 0 // 初始化购买数量为 0
           };
         });
         
         this.setData({ cartList });
-        this.calculateTotal(); // 重置底部总价
+        this.calculateTotal(); 
+      } else {
+        console.warn('商品列表为空，或者前端没能正确解析数据结构');
+        // 如果解析失败，依然加载假数据兜底，防止白屏
+        this.setMockData();
       }
     })
     .catch(err => {
       wx.hideLoading();
       console.error('请求商品列表失败', err);
-      // 开发调试阶段的 fallback (防止后端没开导致白屏)
       this.setMockData();
     });
   },
