@@ -8,8 +8,8 @@
     </view>
   </view>
 
-  <!-- 独立保存按钮，位于顶部栏右下方 -->
-  <view class="save-btn" style="top: {{statusBarHeight + 54}}px;" bindtap="saveArtwork">保存</view>
+  <!-- cover-view 可浮于原生组件（canvas）之上 -->
+  <cover-view class="save-btn" style="top: {{statusBarHeight + 54}}px;" bindtap="saveArtwork">保存</cover-view>
 
   <view class="canvas-wrap">
     <canvas
@@ -49,6 +49,11 @@
       <view class="tool-btn {{activeTool === 'hollow' ? 'tool-btn-active' : ''}}" data-tool="hollow" bindtap="switchTool">镂空</view>
       <view class="tool-btn {{activeTool === 'eraser' ? 'tool-btn-active' : ''}}" data-tool="eraser" bindtap="switchTool">橡皮擦</view>
       <view class="tool-btn tool-btn-danger" bindtap="clearCanvas">清空</view>
+      <!-- 花纹库入口：点击跳转至花纹选择页 -->
+      <view class="tool-btn tool-btn-pattern {{activeTool === 'pattern' ? 'tool-btn-pattern-active' : ''}}" bindtap="goToPatternLibrary">
+        <text wx:if="{{pendingPatternName}}">{{pendingPatternName}}</text>
+        <text wx:else>花纹库</text>
+      </view>
     </view>
   </view>
 </view>

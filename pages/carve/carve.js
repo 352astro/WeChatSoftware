@@ -7,6 +7,8 @@ const TOOL_COLOR_MAP = {
   hollow: '#FFFFFF',
   eraser: BG_COLOR
 };
+// 花纹默认绘制尺寸（逻辑像素）
+const PATTERN_SIZE = 120;
 
 Page({
   data: {
@@ -15,13 +17,15 @@ Page({
     canvasWidth: 320,
     canvasHeight: 420,
     lineWidth: 10,
-    activeTool: 'carve'
+    activeTool: 'carve',
+    pendingPatternName: ''   // 待放置的花纹名称，非空时表示有花纹可用
   },
 
   onLoad() {
     const { statusBarHeight, safeArea, windowWidth, windowHeight } = wx.getSystemInfoSync();
     const topBarHeightPx = 44;
-    const bottomBarHeightPx = 130;
+    const tabBarHeightPx = 50;            // 系统 tabBar 高度
+    const bottomBarHeightPx = 130 + tabBarHeightPx;
     const horizontalPadding = 24;
     const verticalPadding = 24;
     const safeBottom = safeArea ? windowHeight - safeArea.bottom : 0;
@@ -40,6 +44,26 @@ Page({
 
   onReady() {
     this.initCanvas();
+  },
+
+  onShow() {
+    // 从花纹库返回后，检查是否选择了花纹
+    const pattern = wx.getStorageSync('selected_pattern');
+    if (pattern && pattern.thumb) {
+      wx.removeStorageSync('selected_pattern');
+      // 暂存花纹，等待用户点击画布放置（仅一次）
+      this.pendingPattern = pattern;
+      this.setData({
+        activeTool: 'pattern',
+        pendingPatternName: pattern.name
+      });
+      wx.showToast({ title: `已加载「${pattern.name}」\n点击画布放置`, icon: 'none', duration: 2000 });
+    }
+  },
+
+  // 跳转花纹库
+  goToPatternLibrary() {
+    wx.navigateTo({ url: '/pages/pattern-library/pattern-library' });
   },
 
   async initCanvas() {
@@ -95,8 +119,11 @@ Page({
 
   switchTool(e) {
     const tool = e.currentTarget.dataset.tool;
-    if (!TOOL_COLOR_MAP[tool]) return;
-    this.setData({ activeTool: tool });
+    // 普通工具切换（切换后取消待用花纹）
+    if (TOOL_COLOR_MAP[tool]) {
+      this.pendingPattern = null;
+      this.setData({ activeTool: tool, pendingPatternName: '' });
+    }
   },
 
   onSizeChange(e) {
@@ -110,6 +137,16 @@ Page({
   onTouchStart(e) {
     const point = this.getTouchPoint(e);
     if (!point || !this.ctx) return;
+
+    // 花纹工具：点击画布放置花纹图片（仅一次）
+    if (this.data.activeTool === 'pattern') {
+      if (!this.pendingPattern || !this.pendingPattern.thumb) return;
+      this.drawPatternOnCanvas(this.pendingPattern.thumb, point.x, point.y);
+      // 用完清除，恢复雕刻工具
+      this.pendingPattern = null;
+      this.setData({ activeTool: 'carve', pendingPatternName: '' });
+      return;
+    }
 
     this.isDrawing = true;
     this.lastPoint = point;
@@ -138,6 +175,21 @@ Page({
   onTouchEnd() {
     this.isDrawing = false;
     this.lastPoint = null;
+  },
+
+  // 将花纹图片绘制到画布，以点击点为中心
+  drawPatternOnCanvas(thumbPath, cx, cy) {
+    if (!this.canvas || !this.ctx) return;
+
+    const img = this.canvas.createImage();
+    img.onload = () => {
+      const half = PATTERN_SIZE / 2;
+      this.ctx.drawImage(img, cx - half, cy - half, PATTERN_SIZE, PATTERN_SIZE);
+    };
+    img.onerror = () => {
+      wx.showToast({ title: '花纹图片加载失败', icon: 'none' });
+    };
+    img.src = thumbPath;
   },
 
   getTouchPoint(e) {

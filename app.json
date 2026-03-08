@@ -11,7 +11,8 @@
     "pages/order-pay/order-pay",
     "pages/address/address",
     "pages/order-history/order-history",
-    "pages/address-edit/address-edit"
+    "pages/address-edit/address-edit",
+    "pages/pattern-library/pattern-library"
   ],
   "window": {
     "navigationBarTextStyle": "black",

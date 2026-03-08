@@ -1,0 +1,29 @@
+<!-- pages/pattern-library/pattern-library.wxml -->
+<view class="page">
+  <view class="top-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="top-row">
+      <view class="top-btn" bindtap="goBack">← 返回</view>
+      <view class="top-title">花纹库</view>
+      <view class="top-placeholder"></view>
+    </view>
+  </view>
+
+  <scroll-view class="pattern-scroll" scroll-y="true" style="padding-top: {{navHeight}}px;">
+    <view class="section" wx:for="{{categories}}" wx:key="name">
+      <view class="section-title">{{item.name}}</view>
+      <view class="pattern-grid">
+        <view
+          class="pattern-item"
+          wx:for="{{item.patterns}}"
+          wx:for-item="pattern"
+          wx:key="id"
+          bindtap="onPatternTap"
+          data-pattern="{{pattern}}"
+        >
+          <image class="pattern-img" src="{{pattern.thumb}}" mode="aspectFill" />
+          <text class="pattern-name">{{pattern.name}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

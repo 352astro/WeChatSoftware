@@ -32,6 +32,12 @@
   width: 130rpx;
 }
 
+.top-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #eafff8;
+}
+
 .save-btn {
   position: absolute;
   right: 24rpx;
@@ -42,12 +48,6 @@
   font-size: 28rpx;
   box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.25);
   z-index: 999;
-}
-
-.top-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #eafff8;
 }
 
 .canvas-wrap {
@@ -68,6 +68,7 @@
   background: #85A96F;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding: 20rpx 24rpx 18rpx;
+  padding-bottom: calc(18rpx + env(safe-area-inset-bottom));
   flex-shrink: 0;
 }
 
@@ -121,4 +122,17 @@
 .tool-btn-danger {
   background: #7a3a3a;
   color: #ffecec;
+}
+
+.tool-btn-pattern {
+  background: #588FAC;
+  color: #eafff8;
+  border-color: #C7CF61;
+  font-size: 22rpx;
+}
+
+.tool-btn-pattern-active {
+  background: #C7CF61;
+  color: #ffffff;
+  border-color: #C7CF61;
 }
