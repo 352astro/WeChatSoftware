@@ -26,19 +26,27 @@
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "assets/home.png",
+        "selectedIconPath": "assets/home-active.png"
       },
       {
         "pagePath": "pages/carve/carve",
-        "text": "纹样雕刻"
+        "text": "纹样雕刻",
+        "iconPath": "assets/knife.png",
+        "selectedIconPath": "assets/knife-active.png"
       },
       {
         "pagePath": "pages/cart/cart",
-        "text": "产品选购"
+        "text": "产品选购",
+        "iconPath": "assets/cart.png",
+        "selectedIconPath": "assets/cart-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/personal.png",
+        "selectedIconPath": "assets/personal-active.png"
       }
     ]
   },
