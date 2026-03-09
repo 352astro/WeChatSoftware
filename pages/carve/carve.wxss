@@ -55,8 +55,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20rpx 24rpx;
+  padding: 56rpx 24rpx 20rpx;
   box-sizing: border-box;
+  position: relative;
 }
 
 .paint-canvas {
@@ -135,4 +136,63 @@
   background: #C7CF61;
   color: #ffffff;
   border-color: #C7CF61;
+}
+
+/* 花纹预览图（cover-image，覆盖在 canvas 上） */
+.pattern-preview {
+  position: absolute;
+}
+
+/* 花纹调整面板（替换底部工具栏，普通 view，位于 canvas 下方） */
+.pattern-adjust-bar {
+  background: #4a7a96;
+}
+
+.adjust-hint {
+  font-size: 22rpx;
+  color: #c8f7e8;
+  margin-bottom: 8rpx;
+}
+
+/* 预览区：左侧预览窗口 + 右侧滑块并排 */
+.adjust-main {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 4rpx;
+}
+
+/* 预览窗口：固定 80x80 正方形，居中显示预览图 */
+.adjust-preview-wrap {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12rpx;
+  border: 1px solid rgba(199, 207, 97, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.adjust-preview-img {
+  transition: width 0.1s, height 0.1s, transform 0.1s;
+}
+
+/* 滑块区占满剩余宽度 */
+.adjust-sliders {
+  flex: 1;
+  min-width: 0;
+}
+
+.pattern-action-cancel {
+  background: rgba(255,255,255,0.15);
+  color: #EFE8D4;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.pattern-action-confirm {
+  background: #C7CF61;
+  color: #ffffff;
 }

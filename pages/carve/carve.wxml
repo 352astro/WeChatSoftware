@@ -8,7 +8,7 @@
     </view>
   </view>
 
-  <!-- cover-view 可浮于原生组件（canvas）之上 -->
+  <!-- 保存按钮：cover-view 浮于 canvas 之上 -->
   <cover-view class="save-btn" style="top: {{statusBarHeight + 54}}px;" bindtap="saveArtwork">保存</cover-view>
 
   <view class="canvas-wrap">
@@ -24,16 +24,22 @@
       bindtouchend="onTouchEnd"
       bindtouchcancel="onTouchEnd"
     />
+    <!-- 花纹预览图：cover-image 覆盖 canvas，仅在调整模式显示 -->
+    <cover-image
+      wx:if="{{patternAdjusting}}"
+      class="pattern-preview"
+      src="{{patternPreviewSrc}}"
+      style="width: {{patternSize}}px; height: {{patternSize}}px; left: {{patternX - patternSize/2}}px; top: {{patternY - patternSize/2}}px; transform: rotate({{patternRotate}}deg);"
+    />
   </view>
 
-  <view class="bottom-bar" style="padding-bottom: {{safeBottom}}px;">
+  <!-- 正常底部工具栏 -->
+  <view class="bottom-bar" wx:if="{{!patternAdjusting}}" style="padding-bottom: {{safeBottom}}px;">
     <view class="size-row">
       <text class="size-label">画笔大小</text>
       <slider
         class="size-slider"
-        min="2"
-        max="30"
-        step="1"
+        min="2" max="30" step="1"
         value="{{lineWidth}}"
         activeColor="#C7CF61"
         backgroundColor="#85A96F"
@@ -43,17 +49,65 @@
       />
       <text class="size-value">{{lineWidth}}</text>
     </view>
-
     <view class="tool-row">
       <view class="tool-btn {{activeTool === 'carve' ? 'tool-btn-active' : ''}}" data-tool="carve" bindtap="switchTool">雕刻</view>
       <view class="tool-btn {{activeTool === 'hollow' ? 'tool-btn-active' : ''}}" data-tool="hollow" bindtap="switchTool">镂空</view>
       <view class="tool-btn {{activeTool === 'eraser' ? 'tool-btn-active' : ''}}" data-tool="eraser" bindtap="switchTool">橡皮擦</view>
       <view class="tool-btn tool-btn-danger" bindtap="clearCanvas">清空</view>
-      <!-- 花纹库入口：点击跳转至花纹选择页 -->
       <view class="tool-btn tool-btn-pattern {{activeTool === 'pattern' ? 'tool-btn-pattern-active' : ''}}" bindtap="goToPatternLibrary">
         <text wx:if="{{pendingPatternName}}">{{pendingPatternName}}</text>
         <text wx:else>花纹库</text>
       </view>
+    </view>
+  </view>
+
+  <!-- 花纹调整面板：替换底部工具栏，位于 canvas 下方，不与 canvas 重叠 -->
+  <view class="bottom-bar pattern-adjust-bar" wx:if="{{patternAdjusting}}" style="padding-bottom: {{safeBottom}}px;">
+    <!-- 预览区：左侧小预览图 + 右侧滑块 -->
+    <view class="adjust-main">
+      <!-- 实时预览窗口 -->
+      <view class="adjust-preview-wrap">
+        <image
+          class="adjust-preview-img"
+          src="{{patternPreviewSrc}}"
+          style="width: {{previewDisplaySize}}px; height: {{previewDisplaySize}}px; transform: rotate({{patternRotate}}deg);"
+          mode="aspectFit"
+        />
+      </view>
+      <!-- 滑块区 -->
+      <view class="adjust-sliders">
+        <view class="adjust-hint">调整后点击确认放置</view>
+        <view class="size-row">
+          <text class="size-label">大小 {{patternSize}}</text>
+          <slider
+            class="size-slider"
+            min="40" max="300" step="4"
+            value="{{patternSize}}"
+            activeColor="#C7CF61"
+            backgroundColor="#85A96F"
+            block-size="16"
+            bindchange="onPatternSizeChange"
+            bindchanging="onPatternSizeChange"
+          />
+        </view>
+        <view class="size-row">
+          <text class="size-label">旋转 {{patternRotate}}°</text>
+          <slider
+            class="size-slider"
+            min="-180" max="180" step="1"
+            value="{{patternRotate}}"
+            activeColor="#C7CF61"
+            backgroundColor="#85A96F"
+            block-size="16"
+            bindchange="onPatternRotateChange"
+            bindchanging="onPatternRotateChange"
+          />
+        </view>
+      </view>
+    </view>
+    <view class="tool-row">
+      <view class="tool-btn pattern-action-cancel" bindtap="cancelPattern">取消</view>
+      <view class="tool-btn pattern-action-confirm" bindtap="confirmPattern">确认放置</view>
     </view>
   </view>
 </view>

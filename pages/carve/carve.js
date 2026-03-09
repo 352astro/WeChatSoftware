@@ -18,7 +18,15 @@ Page({
     canvasHeight: 420,
     lineWidth: 10,
     activeTool: 'carve',
-    pendingPatternName: ''   // 待放置的花纹名称，非空时表示有花纹可用
+    pendingPatternName: '',   // 待放置的花纹名称，非空时表示有花纹可用
+    // 花纹调整浮层状态
+    patternAdjusting: false,
+    patternPreviewSrc: '',
+    patternX: 160,
+    patternY: 200,
+    patternSize: 120,
+    patternRotate: 0,
+    previewDisplaySize: 48   // 调整面板内小预览图的显示尺寸（px）
   },
 
   onLoad() {
@@ -27,7 +35,7 @@ Page({
     const tabBarHeightPx = 50;            // 系统 tabBar 高度
     const bottomBarHeightPx = 130 + tabBarHeightPx;
     const horizontalPadding = 24;
-    const verticalPadding = 24;
+    const verticalPadding = 38;   // 上方加大以为保存按钮留空间（对应 padding-top: 56rpx ≈ 28px + 原 20rpx ≈ 10px）
     const safeBottom = safeArea ? windowHeight - safeArea.bottom : 0;
 
     const usableWidth = windowWidth - horizontalPadding * 2;
@@ -69,9 +77,11 @@ Page({
   async initCanvas() {
     const query = wx.createSelectorQuery();
     query.select('#carveCanvas').fields({ node: true, size: true, rect: true });
+    query.select('.canvas-wrap').fields({ rect: true });
 
     query.exec((res) => {
       const target = res && res[0];
+      const wrapInfo = res && res[1];
       if (!target || !target.node) {
         wx.showToast({ title: '画布初始化失败', icon: 'none' });
         return;
@@ -83,6 +93,10 @@ Page({
       this.canvas = node;
       this.ctx = node.getContext('2d');
       this.canvasRect = { left: left || 0, top: top || 0 };
+      // canvas-wrap 左上角（用于 cover-image 坐标换算）
+      this.wrapRect = wrapInfo
+        ? { left: wrapInfo.left || 0, top: wrapInfo.top || 0 }
+        : { left: 0, top: 0 };
       this.dpr = dpr;
 
       this.canvas.width = width * dpr;
@@ -138,13 +152,21 @@ Page({
     const point = this.getTouchPoint(e);
     if (!point || !this.ctx) return;
 
-    // 花纹工具：点击画布放置花纹图片（仅一次）
+    // 花纹工具：点击画布，打开调整面板
     if (this.data.activeTool === 'pattern') {
       if (!this.pendingPattern || !this.pendingPattern.thumb) return;
-      this.drawPatternOnCanvas(this.pendingPattern.thumb, point.x, point.y);
-      // 用完清除，恢复雕刻工具
-      this.pendingPattern = null;
-      this.setData({ activeTool: 'carve', pendingPatternName: '' });
+      // point 是相对 canvas 的坐标，换算为相对 canvas-wrap 的坐标供 cover-image 定位
+      const offsetX = (this.canvasRect ? this.canvasRect.left : 0) - (this.wrapRect ? this.wrapRect.left : 0);
+      const offsetY = (this.canvasRect ? this.canvasRect.top : 0) - (this.wrapRect ? this.wrapRect.top : 0);
+      this.setData({
+        patternAdjusting: true,
+        patternPreviewSrc: this.pendingPattern.thumb,
+        patternX: point.x + offsetX,
+        patternY: point.y + offsetY,
+        patternSize: PATTERN_SIZE,
+        patternRotate: 0,
+        previewDisplaySize: Math.round(72 * (PATTERN_SIZE / 300))
+      });
       return;
     }
 
@@ -177,14 +199,48 @@ Page({
     this.lastPoint = null;
   },
 
-  // 将花纹图片绘制到画布，以点击点为中心
-  drawPatternOnCanvas(thumbPath, cx, cy) {
+  // 花纹调整：滑块改变大小
+  onPatternSizeChange(e) {
+    const patternSize = e.detail.value;
+    // 预览窗口固定 80px，按比例缩放显示（最大不超过 72px 留边距）
+    const previewDisplaySize = Math.round(72 * (patternSize / 300));
+    this.setData({ patternSize, previewDisplaySize });
+  },
+
+  // 花纹调整：滑块改变旋转
+  onPatternRotateChange(e) {
+    this.setData({ patternRotate: e.detail.value });
+  },
+
+  // 取消放置花纹
+  cancelPattern() {
+    this.setData({ patternAdjusting: false });
+  },
+
+  // 确认放置：将花纹以当前参数绘制到 canvas
+  confirmPattern() {
+    const { patternX, patternY, patternSize, patternRotate, patternPreviewSrc } = this.data;
+    this.setData({ patternAdjusting: false });
+    this.drawPatternOnCanvas(patternPreviewSrc, patternX, patternY, patternSize, patternRotate);
+    // 用完清除，恢复雕刻工具
+    this.pendingPattern = null;
+    this.setData({ activeTool: 'carve', pendingPatternName: '' });
+  },
+
+  // 将花纹图片绘制到画布，以点击点为中心，支持缩放和旋转
+  drawPatternOnCanvas(thumbPath, cx, cy, size, rotateDeg) {
     if (!this.canvas || !this.ctx) return;
+    const drawSize = size || PATTERN_SIZE;
+    const angle = ((rotateDeg || 0) * Math.PI) / 180;
 
     const img = this.canvas.createImage();
     img.onload = () => {
-      const half = PATTERN_SIZE / 2;
-      this.ctx.drawImage(img, cx - half, cy - half, PATTERN_SIZE, PATTERN_SIZE);
+      const half = drawSize / 2;
+      this.ctx.save();
+      this.ctx.translate(cx, cy);
+      this.ctx.rotate(angle);
+      this.ctx.drawImage(img, -half, -half, drawSize, drawSize);
+      this.ctx.restore();
     };
     img.onerror = () => {
       wx.showToast({ title: '花纹图片加载失败', icon: 'none' });
