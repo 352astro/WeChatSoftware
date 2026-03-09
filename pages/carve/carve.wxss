@@ -61,7 +61,7 @@
 }
 
 .paint-canvas {
-  border-radius: 20rpx;
+  border-radius: 50%;
   box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.2);
 }
 

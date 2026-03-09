@@ -15,7 +15,7 @@ Page({
     statusBarHeight: 20,
     safeBottom: 0,
     canvasWidth: 320,
-    canvasHeight: 420,
+    canvasHeight: 320,
     lineWidth: 10,
     activeTool: 'carve',
     pendingPatternName: '',   // 待放置的花纹名称，非空时表示有花纹可用
@@ -42,11 +42,13 @@ Page({
     const usableHeight =
       windowHeight - statusBarHeight - topBarHeightPx - bottomBarHeightPx - safeBottom - verticalPadding * 2;
 
+    const canvasSize = Math.max(200, Math.min(usableWidth, usableHeight));
+
     this.setData({
       statusBarHeight,
       safeBottom,
-      canvasWidth: Math.max(200, usableWidth),
-      canvasHeight: Math.max(240, usableHeight)
+      canvasWidth: canvasSize,
+      canvasHeight: canvasSize
     });
   },
 
@@ -115,20 +117,33 @@ Page({
 
     const { canvasWidth, canvasHeight } = this.data;
     this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    this.ctx.fillStyle = BG_COLOR;
-    this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    const radius = Math.min(canvasWidth, canvasHeight) / 2;
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
 
-    const count = Math.floor((canvasWidth * canvasHeight) / 2600);
-    for (let i = 0; i < count; i += 1) {
-      const x = Math.random() * canvasWidth;
-      const y = Math.random() * canvasHeight;
-      const radius = 1 + Math.random() * 2.4;
-      const alpha = 0.06 + Math.random() * 0.08;
-      this.ctx.beginPath();
-      this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(28, 84, 73, ${alpha})`;
-      this.ctx.fill();
-    }
+    this.withCircleClip(() => {
+      this.ctx.fillStyle = BG_COLOR;
+      this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+      const count = Math.floor((canvasWidth * canvasHeight) / 2600);
+      for (let i = 0; i < count; i += 1) {
+        const x = Math.random() * canvasWidth;
+        const y = Math.random() * canvasHeight;
+        const dotRadius = 1 + Math.random() * 2.4;
+        const alpha = 0.06 + Math.random() * 0.08;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+        this.ctx.fillStyle = `rgba(28, 84, 73, ${alpha})`;
+        this.ctx.fill();
+      }
+    });
+
+    // 给圆形边缘补一个轻微描边，视觉更清晰
+    this.ctx.beginPath();
+    this.ctx.arc(centerX, centerY, radius - 0.5, 0, Math.PI * 2);
+    this.ctx.strokeStyle = 'rgba(239, 232, 212, 0.4)';
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
   },
 
   switchTool(e) {
@@ -150,7 +165,7 @@ Page({
 
   onTouchStart(e) {
     const point = this.getTouchPoint(e);
-    if (!point || !this.ctx) return;
+    if (!point || !this.ctx || !this.isPointInCircle(point)) return;
 
     // 花纹工具：点击画布，打开调整面板
     if (this.data.activeTool === 'pattern') {
@@ -173,23 +188,31 @@ Page({
     this.isDrawing = true;
     this.lastPoint = point;
 
-    this.ctx.beginPath();
-    this.ctx.fillStyle = TOOL_COLOR_MAP[this.data.activeTool];
-    this.ctx.arc(point.x, point.y, this.data.lineWidth / 2, 0, Math.PI * 2);
-    this.ctx.fill();
+    this.withCircleClip(() => {
+      this.ctx.beginPath();
+      this.ctx.fillStyle = TOOL_COLOR_MAP[this.data.activeTool];
+      this.ctx.arc(point.x, point.y, this.data.lineWidth / 2, 0, Math.PI * 2);
+      this.ctx.fill();
+    });
   },
 
   onTouchMove(e) {
     if (!this.isDrawing || !this.ctx) return;
     const point = this.getTouchPoint(e);
     if (!point || !this.lastPoint) return;
+    if (!this.isPointInCircle(point) || !this.isPointInCircle(this.lastPoint)) {
+      this.lastPoint = point;
+      return;
+    }
 
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = TOOL_COLOR_MAP[this.data.activeTool];
-    this.ctx.lineWidth = this.data.lineWidth;
-    this.ctx.moveTo(this.lastPoint.x, this.lastPoint.y);
-    this.ctx.lineTo(point.x, point.y);
-    this.ctx.stroke();
+    this.withCircleClip(() => {
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = TOOL_COLOR_MAP[this.data.activeTool];
+      this.ctx.lineWidth = this.data.lineWidth;
+      this.ctx.moveTo(this.lastPoint.x, this.lastPoint.y);
+      this.ctx.lineTo(point.x, point.y);
+      this.ctx.stroke();
+    });
 
     this.lastPoint = point;
   },
@@ -221,7 +244,16 @@ Page({
   confirmPattern() {
     const { patternX, patternY, patternSize, patternRotate, patternPreviewSrc } = this.data;
     this.setData({ patternAdjusting: false });
-    this.drawPatternOnCanvas(patternPreviewSrc, patternX, patternY, patternSize, patternRotate);
+    // patternX/patternY 是相对 canvas-wrap 的预览坐标，绘制前换算回 canvas 坐标
+    const offsetX = (this.canvasRect ? this.canvasRect.left : 0) - (this.wrapRect ? this.wrapRect.left : 0);
+    const offsetY = (this.canvasRect ? this.canvasRect.top : 0) - (this.wrapRect ? this.wrapRect.top : 0);
+    this.drawPatternOnCanvas(
+      patternPreviewSrc,
+      patternX - offsetX,
+      patternY - offsetY,
+      patternSize,
+      patternRotate
+    );
     // 用完清除，恢复雕刻工具
     this.pendingPattern = null;
     this.setData({ activeTool: 'carve', pendingPatternName: '' });
@@ -236,16 +268,65 @@ Page({
     const img = this.canvas.createImage();
     img.onload = () => {
       const half = drawSize / 2;
-      this.ctx.save();
-      this.ctx.translate(cx, cy);
-      this.ctx.rotate(angle);
-      this.ctx.drawImage(img, -half, -half, drawSize, drawSize);
-      this.ctx.restore();
+      this.withCircleClip(() => {
+        this.ctx.save();
+        this.ctx.translate(cx, cy);
+        this.ctx.rotate(angle);
+        const tintedCanvas = this.createTintedPatternCanvas(img, drawSize);
+        this.ctx.drawImage(tintedCanvas || img, -half, -half, drawSize, drawSize);
+        this.ctx.restore();
+      });
     };
     img.onerror = () => {
       wx.showToast({ title: '花纹图片加载失败', icon: 'none' });
     };
     img.src = thumbPath;
+  },
+
+  // 为花纹图创建“雕刻色”版本，保留原图透明度
+  createTintedPatternCanvas(image, size) {
+    if (!image || !size) return null;
+    if (typeof wx.createOffscreenCanvas !== 'function') return null;
+
+    try {
+      const offscreen = wx.createOffscreenCanvas({ type: '2d', width: size, height: size });
+      const offCtx = offscreen.getContext('2d');
+      offCtx.drawImage(image, 0, 0, size, size);
+      offCtx.globalCompositeOperation = 'source-in';
+      offCtx.fillStyle = TOOL_COLOR_MAP.carve;
+      offCtx.fillRect(0, 0, size, size);
+      offCtx.globalCompositeOperation = 'source-over';
+      return offscreen;
+    } catch (err) {
+      console.warn('创建花纹离屏画布失败，回退原图颜色', err);
+      return null;
+    }
+  },
+
+  withCircleClip(drawFn) {
+    if (!this.ctx || typeof drawFn !== 'function') return;
+    const { canvasWidth, canvasHeight } = this.data;
+    const radius = Math.min(canvasWidth, canvasHeight) / 2;
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
+
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    this.ctx.clip();
+    drawFn();
+    this.ctx.restore();
+  },
+
+  isPointInCircle(point) {
+    if (!point) return false;
+    const { canvasWidth, canvasHeight } = this.data;
+    const radius = Math.min(canvasWidth, canvasHeight) / 2;
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
+    const dx = point.x - centerX;
+    const dy = point.y - centerY;
+    return dx * dx + dy * dy <= radius * radius;
   },
 
   getTouchPoint(e) {
